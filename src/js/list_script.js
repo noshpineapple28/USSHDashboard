@@ -10,6 +10,10 @@ class ListScript {
     document.getElementById("scripts").appendChild(this.html);
   }
 
+  attemptRemoveScript() {
+    SOCKET.emit("attemptRemoveScript", this.title);
+  }
+
   /**
    * fills the `this.html` field with associated html tags
    *
@@ -79,6 +83,7 @@ class ListScript {
     // html_remove
     this.html_remove = document.createElement("i");
     this.html_remove.classList += "fa-solid fa-trash remove"
+    this.html_remove.addEventListener("click", () => this.attemptRemoveScript());
     this.script_controls.appendChild(this.html_remove);
   }
 }

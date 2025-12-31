@@ -1,7 +1,7 @@
 const express = require("express");
 const socketIO = require("socket.io");
 const http = require("http");
-const fs = require('fs');
+const fs = require("fs");
 const app = express();
 const PORT = process.argv[process.argv.length - 1];
 
@@ -35,6 +35,30 @@ io.on("connection", (socket) => {
     SCRIPTS.push(script);
     socket.emit("scriptCreated");
     fs.writeFileSync("./scripts.json", JSON.stringify(SCRIPTS));
+  });
+
+  /**
+   * attempts to delete a script
+   */
+  socket.on("attemptRemoveScript", (script) => {
+    let i = 0;
+    let found = false;
+    console.log(`Attempting to remove script: ${script}`);
+    for (let sc of SCRIPTS) {
+      if (sc["title"] === script) {
+        found = true;
+        break;
+      }
+      i++;
+    }
+    if (!found) {
+      console.log("No script with that title found");
+      return;
+    }
+    console.log(`Removing script: ${script}`);
+    SCRIPTS.splice(i, 1);
+    fs.writeFileSync("./scripts.json", JSON.stringify(SCRIPTS));
+    socket.emit("loadScripts", SCRIPTS);
   });
 });
 
