@@ -5,44 +5,22 @@
     <title>NGINX Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles/styles.css" />
-    <!-- set to ur ip -->
+    <link rel="stylesheet" href="/styles/dashboard.css" />
     <script src="./socket.io/socket.io.js"></script>
-    <script src="./js/Console.js"></script>
+    <script src="./js/list_script.js"></script>
+    <script src="./js/dashboard.js"></script>
   </head>
   <body>
     <h1>NGINX Dashboard</h1>
     <div id="controls">
-      <button id="CreateScript" onclick="window.location.href += 'create_script.html'">Create Script</button>
+      <button
+        id="CreateScript"
+        onclick="window.location.href += 'create_script.html'"
+      >
+        Create Script
+      </button>
     </div>
-    <div>
-      <div class="list_script">
-        <div class="script_header">
-          <p class="script_port">
-            3000
-          </p>
-          <p class="script_title">
-            Minecraft House
-          </p>
-          <p class="script_status on">
-            ON
-          </p>
-        </div>
-        <div class="script_access">
-          <div class="meta_info">
-            <div class="script_title script_info">
-              C:\Users\manou\Documents\mcserver\MCServerAndDiscordPortal\
-            </div>
-            <div class="script_title script_info">{ node index.js }</div>
-          </div>
-          <div class="script_controls">
-            <i class="fa-solid fa-pen-to-square edit"></i>
-            <i class="fa-solid fa-stop terminate"></i>
-            <i class="fa-solid fa-person-running execute"></i>
-            <i class="fa-solid fa-trash remove"></i>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="scripts"></div>
   </body>
 
   <!-- font-awesome -->

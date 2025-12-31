@@ -1,0 +1,99 @@
+/* controls */
+
+#controls {
+  display: flex;
+  justify-content: center;
+  margin: 1em;
+}
+
+#controls button {
+  width: 80vw;
+}
+
+#scripts {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+
+/* list script */
+
+.list_script {
+  padding: 1em;
+  border-radius: 1em;
+  background-color: rgb(170, 170, 170);
+}
+
+/* script header */
+.script_header {
+  display: flex;
+  font-family: "Courier New", monospace;
+  font-size: large;
+  gap: 1em;
+}
+
+.list_script .script_title {
+  margin: 0;
+}
+
+.list_script .script_port {
+  font-weight: bold;
+  margin: 0;
+}
+
+.list_script .script_status {
+  margin: 0;
+}
+
+.list_script .off {
+  color: black;
+}
+
+.list_script .on {
+  color: green;
+}
+
+/* script access controls */
+.script_access {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.list_script .meta_info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.list_script .script_title {
+  color: black;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 30vw;
+  transition: 0.2s;
+}
+
+.script_title:hover {
+  max-width: 100vw;
+}
+
+.list_script .script_info {
+  color: gray;
+}
+
+.list_script .script_controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+/* controls */
+.script_controls i {
+  cursor: pointer;
+}
