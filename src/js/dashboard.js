@@ -13,8 +13,6 @@ function loadScripts(NEW_SCRIPTS) {
 
   for (const SCRIPT in NEW_SCRIPTS) {
     // creating the class by default will
-    if (SCRIPT === "nextID") continue;
-
     SCRIPTS.push(
       new ListScript(
         NEW_SCRIPTS[SCRIPT]["port"],
