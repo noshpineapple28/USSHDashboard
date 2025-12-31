@@ -42,8 +42,13 @@ window.onload = () => {
   );
 };
 
-SOCKET.on("scriptCreated", () =>
-  window.location.href = window.location.href.replace("create_script.html", "")
+SOCKET.on(
+  "scriptCreated",
+  () =>
+    (window.location.href = window.location.href.replace(
+      "create_script.html",
+      ""
+    ))
 );
 
 SOCKET.on("scriptCreationFailed", () => {

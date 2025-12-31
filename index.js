@@ -1,4 +1,5 @@
 const express = require("express");
+const crypto = require("crypto");
 const socketIO = require("socket.io");
 const http = require("http");
 const fs = require("fs");
@@ -32,7 +33,9 @@ io.on("connection", (socket) => {
    */
   socket.on("createScript", (script) => {
     console.log(script);
-    SCRIPTS.push(script);
+    script["id"] = SCRIPTS["nextID"];
+    SCRIPTS["nextID"]++;
+    SCRIPTS[script["id"]] = script;
     socket.emit("scriptCreated");
     fs.writeFileSync("./scripts.json", JSON.stringify(SCRIPTS));
   });
@@ -40,23 +43,9 @@ io.on("connection", (socket) => {
   /**
    * attempts to delete a script
    */
-  socket.on("attemptRemoveScript", (script) => {
-    let i = 0;
-    let found = false;
-    console.log(`Attempting to remove script: ${script}`);
-    for (let sc of SCRIPTS) {
-      if (sc["title"] === script) {
-        found = true;
-        break;
-      }
-      i++;
-    }
-    if (!found) {
-      console.log("No script with that title found");
-      return;
-    }
-    console.log(`Removing script: ${script}`);
-    SCRIPTS.splice(i, 1);
+  socket.on("attemptRemoveScript", (scriptID) => {
+    console.log(`Removing script: ${SCRIPTS[scriptID]["title"]}`);
+    delete SCRIPTS[scriptID];
     fs.writeFileSync("./scripts.json", JSON.stringify(SCRIPTS));
     socket.emit("loadScripts", SCRIPTS);
   });

@@ -11,18 +11,21 @@ function loadScripts(NEW_SCRIPTS) {
   SCRIPTS.forEach((script) => script.html.remove());
   SCRIPTS = [];
 
-  for (const SCRIPT of NEW_SCRIPTS) {
+  for (const SCRIPT in NEW_SCRIPTS) {
     // creating the class by default will
+    if (SCRIPT === "nextID") continue;
+
     SCRIPTS.push(
       new ListScript(
-        SCRIPT["port"],
-        SCRIPT["title"],
-        SCRIPT["dir"],
-        SCRIPT["exec"]
+        NEW_SCRIPTS[SCRIPT]["port"],
+        NEW_SCRIPTS[SCRIPT]["title"],
+        NEW_SCRIPTS[SCRIPT]["dir"],
+        NEW_SCRIPTS[SCRIPT]["exec"],
+        NEW_SCRIPTS[SCRIPT]["id"]
       )
     );
   }
 }
 
 // socket io events
-SOCKET.on("loadScripts", NEW_SCRIPTS => loadScripts(NEW_SCRIPTS));
+SOCKET.on("loadScripts", (NEW_SCRIPTS) => loadScripts(NEW_SCRIPTS));

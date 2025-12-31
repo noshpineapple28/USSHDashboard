@@ -1,17 +1,21 @@
 class ListScript {
-  constructor(port, title, dir, exec) {
+  constructor(port, title, dir, exec, id) {
     this.port = port;
     this.title = title;
     this.dir = dir;
     this.exec = exec;
+    this.id = id;
     this.on = false;
     this.html = document.createElement("div");
     this.createHTML();
     document.getElementById("scripts").appendChild(this.html);
   }
 
+  /**
+   * tell server to remove the socket
+   */
   attemptRemoveScript() {
-    SOCKET.emit("attemptRemoveScript", this.title);
+    SOCKET.emit("attemptRemoveScript", this.id);
   }
 
   /**
