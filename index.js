@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 // list of all scripts
-const SCRIPTS = [];
+const SCRIPTS = JSON.parse(fs.readFileSync("./scripts.json"));
 
 // whenever the "/" endpoint appears, allow server to serve all files in the site_map folder
 app.use("/", express.static("src"));
@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
     console.log(script);
     SCRIPTS.push(script);
     socket.emit("scriptCreated");
-    fs.writeFileSync("./scripts.json")
+    fs.writeFileSync("./scripts.json", JSON.stringify(SCRIPTS));
   });
 });
 
