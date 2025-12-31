@@ -29,6 +29,13 @@ io.on("connection", (socket) => {
   });
 
   /**
+   * gets a specific script
+   */
+  socket.on("getScriptByID", (id) => {
+    socket.emit("handleScriptRequest", SCRIPTS[id]);
+  });
+
+  /**
    * creates a new script
    */
   socket.on("createScript", (script) => {
@@ -41,6 +48,20 @@ io.on("connection", (socket) => {
   });
 
   /**
+   * edit an existing script
+   */
+  socket.on("editScript", (script) => {
+    console.log(
+      `Updating script "${SCRIPTS[scripts["id"]]}" to "${
+        script["title"]
+      }" id: ${script["id"]}`
+    );
+    SCRIPTS[script["id"]] = script;
+    socket.emit("scriptEdited");
+    fs.writeFileSync("./scripts.json", JSON.stringify(SCRIPTS));
+  });
+
+  /**
    * attempts to delete a script
    */
   socket.on("attemptRemoveScript", (scriptID) => {
@@ -49,6 +70,10 @@ io.on("connection", (socket) => {
     fs.writeFileSync("./scripts.json", JSON.stringify(SCRIPTS));
     socket.emit("loadScripts", SCRIPTS);
   });
+
+  socket.on("executeScript", id => {
+
+  })
 });
 
 // startup

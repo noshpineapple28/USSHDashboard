@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit Script</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link rel="stylesheet" href="/styles/create_script.css" />
+    <link rel="stylesheet" href="/styles/dashboard.css" />
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="./js/edit_script.js"></script>
+  </head>
+  <body>
+    <h1 id="window_title">Edit Script</h1>
+    <div class="input_row">
+      <p>Script Port:</p>
+      <input
+        type="number"
+        name="port"
+        id="port_input"
+        title="Script Port"
+        value="3000"
+        max="65,535"
+        min="0"
+      />
+    </div>
+    <div class="input_row">
+      <p>Script Title:</p>
+      <input
+        type="text"
+        name="title"
+        id="title_input"
+        title="Script Title"
+        value="Cool Script Title"
+      />
+    </div>
+    <div class="input_row">
+      <p>Script Working Directory:</p>
+      <input
+        type="text"
+        name="directory"
+        id="directory_input"
+        title="Script Working Directory"
+        value="C:\Users\manou\Documents"
+      />
+    </div>
+    <div class="input_row">
+      <p>Script Execution Script:</p>
+      <input
+        type="text"
+        name="execution"
+        id="execution_input"
+        title="Script to execute"
+        value="node index.js"
+      />
+    </div>
+
+    <h1>Sample</h1>
+
+    <div>
+      <div class="list_script">
+        <div class="script_header">
+          <p class="script_port" id="port">3000</p>
+          <p class="script_title" id="title">Cool Script Title</p>
+          <p class="script_status on">ON</p>
+        </div>
+        <div class="script_access">
+          <div class="meta_info">
+            <div class="script_title script_info" id="directory">
+              C:\Users\manou\Documents
+            </div>
+            <div class="script_title script_info" id="execution">
+              { node index.js }
+            </div>
+          </div>
+          <div class="script_controls">
+            <i class="fa-solid fa-pen-to-square edit"></i>
+            <i class="fa-solid fa-stop terminate"></i>
+            <i class="fa-solid fa-person-running execute"></i>
+            <i class="fa-solid fa-trash remove"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+
+    <div id="controls">
+      <button id="create">Edit</button>
+    </div>
+  </body>
+
+  <!-- font-awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+</html>
