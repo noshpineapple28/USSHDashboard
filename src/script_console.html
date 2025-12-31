@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Script Console</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link rel="stylesheet" href="/styles/dashboard.css" />
+    <link rel="stylesheet" href="/styles/script_console.css" />
+    <!-- set to ur ip -->
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="./js/list_script.js"></script>
+    <script src="./js/script_console.js"></script>
+  </head>
+  <body>
+    <h1 id="window_title">Script Console</h1>
+    <div>
+      <div class="list_script">
+        <div class="script_header">
+          <p class="script_port" id="port">3000</p>
+          <p class="script_title" id="title">Cool Script Title</p>
+          <p class="script_status on" id="status">ON</p>
+        </div>
+        <div class="script_access">
+          <div class="meta_info">
+            <div class="script_title script_info" id="directory">
+              C:\Users\manou\Documents
+            </div>
+            <div class="script_title script_info" id="execution">
+              { node index.js }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div id="console"></div>
+    <br />
+    <div id="stdinWrapper">
+      <input type="text" name="stdin" id="stdin" />
+      <button id="submit" disabled>RUN</button>
+    </div>
+  </body>
+</html>

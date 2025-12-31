@@ -15,6 +15,10 @@ const SCRIPTS = loadScripts();
 
 // whenever the "/" endpoint appears, allow server to serve all files in the site_map folder
 app.use("/", express.static("src"));
+// create log directory if it doesn't exist
+if (!fs.existsSync("./logs")) {
+  fs.mkdirSync("./logs");
+}
 
 /**
  * loads scripts to usable format
@@ -33,7 +37,8 @@ function loadScripts() {
         js["scripts"][scr]["title"],
         js["scripts"][scr]["dir"],
         js["scripts"][scr]["exec"],
-        js["scripts"][scr]["id"]
+        js["scripts"][scr]["id"],
+        io
       )
     );
 
@@ -118,7 +123,8 @@ io.on("connection", (socket) => {
         script["title"],
         script["dir"],
         script["exec"],
-        script["id"]
+        script["id"],
+        io
       )
     );
     socket.emit("scriptCreated");
@@ -137,7 +143,8 @@ io.on("connection", (socket) => {
       script["title"],
       script["dir"],
       script["exec"],
-      script["id"]
+      script["id"],
+      io
     );
 
     console.log(
@@ -184,6 +191,15 @@ io.on("connection", (socket) => {
     if (i === undefined) return;
     SCRIPTS["scripts"][i].terminate();
     socket.emit("loadScripts", fetchJSONScripts());
+  });
+
+  /**
+   * write to stdin
+   */
+  socket.on("stdin", (data) => {
+    let i = getScriptIndexByID(data["id"]);
+    if (i === undefined) return;
+    SCRIPTS["scripts"][i].stdinWrite(data["input"]);
   });
 });
 

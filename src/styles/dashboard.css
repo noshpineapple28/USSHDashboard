@@ -30,6 +30,7 @@
   display: flex;
   font-family: "Courier New", monospace;
   font-size: large;
+  cursor: pointer;
   gap: 1em;
 }
 

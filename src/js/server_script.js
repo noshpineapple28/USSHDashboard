@@ -4,7 +4,7 @@ const os = require("os");
 const fs = require("fs");
 
 class ServerScript {
-  constructor(port, title, dir, exec, id) {
+  constructor(port, title, dir, exec, id, io) {
     this.port = port;
     this.title = title;
     this.dir = dir;
@@ -12,6 +12,7 @@ class ServerScript {
     this.id = id;
     this.on = false;
     this.app = undefined;
+    this.io = io;
   }
 
   toJSON() {
@@ -30,6 +31,7 @@ class ServerScript {
       `logs/${this.id}_${this.title}_stderr.log`,
       data.toString()
     );
+    this.io.sockets.emit("consoleMessage", data.toString());
   }
 
   stdoutEvent(data) {
@@ -37,12 +39,16 @@ class ServerScript {
       `logs/${this.id}_${this.title}_stdout.log`,
       data.toString()
     );
+    this.io.sockets.emit("consoleMessage", data.toString());
   }
 
   stdinWrite(data) {
     try {
       this.app.stdin.write(`${data}\n`);
-    } catch (_) {}
+      this.stdoutEvent(data);
+    } catch (_) {
+      console.log(_);
+    }
   }
 
   exitEvent(data) {
@@ -51,6 +57,7 @@ class ServerScript {
       `logs/${this.id}_${this.title}_stdout.log`,
       data.toString()
     );
+    this.io.sockets.emit("consoleMessage", data.toString());
   }
 
   execute() {
@@ -88,7 +95,7 @@ class ServerScript {
       );
     try {
       this.on = false;
-      kill(this.app.pid, 'SIGKILL');
+      kill(this.app.pid, "SIGKILL");
     } catch (_) {
       console.log(_);
     }

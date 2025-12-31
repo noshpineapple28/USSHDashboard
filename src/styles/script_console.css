@@ -1,0 +1,36 @@
+/* console */
+#console {
+  padding: 1em;
+  border-radius: 1em;
+  background-color: rgb(170, 170, 170);
+  height: 60vh;
+  overflow: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+}
+
+#console p {
+  margin: 0;
+}
+
+.list_script {
+  background-color: rgb(75, 75, 75);
+}
+
+#stdinWrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+#stdin {
+  width: 100%;
+  border-radius: 1em;
+  padding: 0.5em;
+}
+
+button {
+  height: 2em;
+  width: 5em;
+}

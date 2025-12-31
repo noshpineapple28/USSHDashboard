@@ -1,5 +1,5 @@
 class ListScript {
-  constructor(port, title, dir, exec, id, on=false) {
+  constructor(port, title, dir, exec, id, on = false) {
     this.port = port;
     this.title = title;
     this.dir = dir;
@@ -52,6 +52,10 @@ class ListScript {
     // headers
     this.header_div = document.createElement("div");
     this.header_div.classList += "script_header";
+    this.header_div.addEventListener(
+      "click",
+      (_) => (window.location.href += `script_console.html?id=${this.id}`)
+    );
     this.container_div.appendChild(this.header_div);
     // port
     this.html_port = document.createElement("p");
