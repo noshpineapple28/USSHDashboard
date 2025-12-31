@@ -19,7 +19,8 @@ function loadScripts(NEW_SCRIPTS) {
         NEW_SCRIPTS[SCRIPT]["title"],
         NEW_SCRIPTS[SCRIPT]["dir"],
         NEW_SCRIPTS[SCRIPT]["exec"],
-        NEW_SCRIPTS[SCRIPT]["id"]
+        NEW_SCRIPTS[SCRIPT]["id"],
+        NEW_SCRIPTS[SCRIPT]["on"]
       )
     );
   }

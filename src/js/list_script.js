@@ -1,11 +1,11 @@
 class ListScript {
-  constructor(port, title, dir, exec, id) {
+  constructor(port, title, dir, exec, id, on=false) {
     this.port = port;
     this.title = title;
     this.dir = dir;
     this.exec = exec;
     this.id = id;
-    this.on = false;
+    this.on = on;
     this.html = document.createElement("div");
     this.createHTML();
     document.getElementById("scripts").appendChild(this.html);
@@ -23,6 +23,20 @@ class ListScript {
    */
   editScript() {
     window.location.href += `edit_script.html?id=${this.id}`;
+  }
+
+  /**
+   * execute the given script
+   */
+  executeScript() {
+    SOCKET.emit("executeScript", this.id);
+  }
+
+  /**
+   * terminate the given script
+   */
+  terminateScript() {
+    SOCKET.emit("terminateScript", this.id);
   }
 
   /**
@@ -87,10 +101,12 @@ class ListScript {
     // html_terminate
     this.html_terminate = document.createElement("i");
     this.html_terminate.classList += "fa-solid fa-stop terminate";
+    this.html_terminate.addEventListener("click", () => this.terminateScript());
     this.script_controls.appendChild(this.html_terminate);
     // html_execute
     this.html_execute = document.createElement("i");
     this.html_execute.classList += "fa-solid fa-person-running execute";
+    this.html_execute.addEventListener("click", () => this.executeScript());
     this.script_controls.appendChild(this.html_execute);
     // html_remove
     this.html_remove = document.createElement("i");

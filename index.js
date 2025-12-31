@@ -13,6 +13,9 @@ const io = socketIO(server);
 // list of all scripts
 const SCRIPTS = loadScripts();
 
+// whenever the "/" endpoint appears, allow server to serve all files in the site_map folder
+app.use("/", express.static("src"));
+
 /**
  * loads scripts to usable format
  * @returns array of scripts in server script format
@@ -61,8 +64,26 @@ function fetchJSONScripts() {
   return obj;
 }
 
-// whenever the "/" endpoint appears, allow server to serve all files in the site_map folder
-app.use("/", express.static("src"));
+/**
+ * gets id of a script
+ */
+function getScriptIndexByID(scriptID) {
+  let i = 0;
+  let discovered = false;
+  for (let script of SCRIPTS["scripts"]) {
+    if (script.id == scriptID) {
+      discovered = true;
+      break;
+    }
+    i++;
+  }
+
+  if (!discovered) {
+    console.log("Script does not exist");
+    return undefined;
+  }
+  return i;
+}
 
 /**
  * sets up the socket.io connection endpoints
@@ -80,21 +101,8 @@ io.on("connection", (socket) => {
    * gets a specific script
    */
   socket.on("getScriptByID", (scriptID) => {
-    let i = 0;
-    let discovered = false;
-    for (let script of SCRIPTS["scripts"]) {
-      console.log(script);
-      if (script.id == scriptID) {
-        discovered = true;
-        break;
-      }
-      i++;
-    }
-
-    if (!discovered) {
-      console.log("Script does not exist");
-      return;
-    }
+    let i = getScriptIndexByID(scriptID);
+    if (i === undefined) return;
     socket.emit("handleScriptRequest", SCRIPTS["scripts"][i].toJSON());
   });
 
@@ -121,20 +129,9 @@ io.on("connection", (socket) => {
    * edit an existing script
    */
   socket.on("editScript", (script) => {
-    let i = 0;
-    let discovered = false;
-    for (let script of SCRIPTS["scripts"]) {
-      console.log(script);
-      if (script.id == script.id) {
-        discovered = true;
-        break;
-      }
-      i++;
-    }
-    if (!discovered) {
-      console.log("Script does not exist");
-      return;
-    }
+    let i = getScriptIndexByID(script["id"]);
+    if (i === undefined) return;
+
     let newScript = new ServerScript(
       script["port"],
       script["title"],
@@ -146,6 +143,7 @@ io.on("connection", (socket) => {
     console.log(
       `Updating script id: ${script["id"]} "${SCRIPTS["scripts"][i].title}" to "${newScript.title}"`
     );
+    SCRIPTS["scripts"][i].delete();
     SCRIPTS["scripts"][i] = newScript;
     socket.emit("scriptEdited");
     saveScripts();
@@ -156,20 +154,8 @@ io.on("connection", (socket) => {
    */
   socket.on("attemptRemoveScript", (scriptID) => {
     console.log(`Removing script: ${scriptID}`);
-    let i = 0;
-    let discovered = false;
-    for (let script of SCRIPTS["scripts"]) {
-      if (script.id == scriptID) {
-        discovered = true;
-        break;
-      }
-      i++;
-    }
-
-    if (!discovered) {
-      console.log("Script does not exist");
-      return;
-    }
+    let i = getScriptIndexByID(scriptID);
+    if (i === undefined) return;
 
     // delete the script
     SCRIPTS["scripts"][i].delete();
@@ -178,10 +164,48 @@ io.on("connection", (socket) => {
     socket.emit("loadScripts", fetchJSONScripts());
   });
 
-  socket.on("executeScript", (id) => {});
+  /**
+   * executes the given script
+   */
+  socket.on("executeScript", (scriptID) => {
+    console.log(`Executing script: ${scriptID}`);
+    let i = getScriptIndexByID(scriptID);
+    if (i === undefined) return;
+    SCRIPTS["scripts"][i].execute();
+    socket.emit("loadScripts", fetchJSONScripts());
+  });
+
+  /**
+   * terminates the given script
+   */
+  socket.on("terminateScript", (scriptID) => {
+    console.log(`Terminating script: ${scriptID}`);
+    let i = getScriptIndexByID(scriptID);
+    if (i === undefined) return;
+    SCRIPTS["scripts"][i].terminate();
+    socket.emit("loadScripts", fetchJSONScripts());
+  });
 });
 
 // startup
 server.listen(PORT, () => {
   console.log(`Started app on port ${PORT}`);
+});
+
+// on close
+process.on("SIGINT", () => {
+  app.close();
+  io.close();
+  server.close();
+  for (let server of SCRIPTS["scripts"]) {
+    server.delete();
+  }
+});
+process.on("SIGKILL", () => {
+  app.close();
+  io.close();
+  server.close();
+  for (let server of SCRIPTS["scripts"]) {
+    server.delete();
+  }
 });
