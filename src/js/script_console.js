@@ -47,8 +47,10 @@ SOCKET.on("handleScriptRequest", (script) => {
 });
 
 SOCKET.on("consoleMessage", (data) => {
+  if (data["id"] != ID)
+    return;
   let msg = document.createElement("p");
-  msg.innerText = data;
-  let console = document.getElementById("console");
-  console.appendChild(msg);
+  msg.innerText = data["message"];
+  let con = document.getElementById("console");
+  con.appendChild(msg);
 });

@@ -31,7 +31,10 @@ class ServerScript {
       `logs/${this.id}_${this.title}_stderr.log`,
       data.toString()
     );
-    this.io.sockets.emit("consoleMessage", data.toString());
+    this.io.sockets.emit("consoleMessage", {
+      message: data.toString(),
+      id: this.id,
+    });
   }
 
   stdoutEvent(data) {
@@ -39,7 +42,10 @@ class ServerScript {
       `logs/${this.id}_${this.title}_stdout.log`,
       data.toString()
     );
-    this.io.sockets.emit("consoleMessage", data.toString());
+    this.io.sockets.emit("consoleMessage", {
+      message: data.toString(),
+      id: this.id,
+    });
   }
 
   stdinWrite(data) {
@@ -57,7 +63,10 @@ class ServerScript {
       `logs/${this.id}_${this.title}_stdout.log`,
       data.toString()
     );
-    this.io.sockets.emit("consoleMessage", data.toString());
+    this.io.sockets.emit("consoleMessage", {
+      message: data.toString(),
+      id: this.id,
+    });
   }
 
   execute() {
